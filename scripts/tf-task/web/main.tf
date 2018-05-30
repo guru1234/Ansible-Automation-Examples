@@ -97,16 +97,13 @@ resource "aws_elb" "web" {
   }
 }
 
-resource "aws_key_pair" "auth" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.public_key_path)}"
-}
-
 resource "aws_instance" "test2a" {
   connection {
     user = "ubuntu"
   }
-
+  lifecycle {
+    create_before_destroy = true
+  }
   instance_type = "t2.micro"
 
   ami = "${lookup(var.aws_amis, var.aws_region)}"
@@ -126,7 +123,9 @@ resource "aws_instance" "test2b" {
   connection {
     user = "ubuntu"
   }
-
+  lifecycle {
+    create_before_destroy = true
+  }
   instance_type = "t2.micro"
 
   ami = "${lookup(var.aws_amis, var.aws_region)}"
@@ -147,7 +146,9 @@ resource "aws_instance" "test2c" {
   connection {
     user = "ubuntu"
   }
-
+  lifecycle {
+    create_before_destroy = true
+  }
   instance_type = "t2.micro"
 
   ami = "${lookup(var.aws_amis, var.aws_region)}"
